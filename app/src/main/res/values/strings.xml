@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Simple Tracker</string>
+    <string name="showReport">Показать</string>
+    <string name="historyBtn">История</string>
+</resources>
