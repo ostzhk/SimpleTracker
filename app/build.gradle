@@ -28,3 +28,7 @@ dependencies {
 dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 }
+dependencies {
+    compile 'com.android.support:design:24.+'
+    compile 'com.android.support:design:24.+'
+}

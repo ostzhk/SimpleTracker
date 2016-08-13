@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -28,18 +29,20 @@ public class ReportActivity extends Activity implements View.OnClickListener {
     Button button;
     Calendar calendar;
     private int year, month, day;
+    TextView textView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
-        button = (Button) findViewById(R.id.button8);
-        button.setOnClickListener(this);
 
+        textView = (TextView)findViewById(R.id.textView);
+
+        calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
-        day = 1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         pieChart = (PieChart) findViewById(R.id.chart);
         pieChart.setUsePercentValues(true);
@@ -138,8 +141,27 @@ public class ReportActivity extends Activity implements View.OnClickListener {
 
     public void showReport() {
         finalSum = 0;
-        date = String.valueOf(year) + "-" + (month + 1) + "-" + 1;
-        date2 = String.valueOf(year) + "-" + (month + 2) + "-" + 1;
+
+        switch (getIntent().getExtras().getInt("date")){
+            case R.id.nav_day:
+                date = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+                break;
+            case R.id.nav_week:
+                date = String.valueOf(year) + "-" + (month + 1) + "-" + (day-7);
+                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+                break;
+            case R.id.nav_month:
+                date = String.valueOf(year) + "-" + (month + 1) + "-" + 1;
+                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+                break;
+            case R.id.nav_year:
+                date = String.valueOf(year - 1) + "-" + (month + 1) + "-" + 1;
+                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + 1;
+                break;
+        }
+
+        textView.setText(date + " - " + date2);
         outlayList = dbHandler.getSumOfCategory(date, date2);
         setData();
         pieChart.animateXY(2000, 2000);

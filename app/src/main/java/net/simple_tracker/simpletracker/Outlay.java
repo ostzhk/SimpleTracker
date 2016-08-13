@@ -7,9 +7,10 @@ public class Outlay {
     String category;
     String date;
 
-    public Outlay(String category, int count) {
+    public Outlay(String category, String date, int count) {
         this.category = category;
         this.count = count;
+        this.date = date;
     }
 
     public String getDate() {

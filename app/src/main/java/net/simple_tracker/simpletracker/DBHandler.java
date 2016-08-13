@@ -75,9 +75,8 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Outlay outlay = new Outlay(cursor.getString(2), Integer.parseInt(cursor.getString(1)));
+                Outlay outlay = new Outlay(cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(1)));
                 outlay.setId(Integer.parseInt(cursor.getString(0)));
-                outlay.setDate(cursor.getString(3));
                 outlayList.add(outlay);
             } while (cursor.moveToNext());
         }
@@ -108,8 +107,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Outlay outlay = new Outlay(cursor.getString(0), Integer.parseInt(cursor.getString(1)));
-                outlay.setDate(cursor.getString(2));
+                Outlay outlay = new Outlay(cursor.getString(0), cursor.getString(2), Integer.parseInt(cursor.getString(1)));
                 outlayList.put(cursor.getString(0), outlay);
             } while (cursor.moveToNext());
         }
@@ -140,9 +138,8 @@ public class DBHandler extends SQLiteOpenHelper {
         Outlay outlay = null;
         if (cursor.moveToFirst()) {
             do {
-                outlay = new Outlay(cursor.getString(2), Integer.parseInt(cursor.getString(3)));
+                outlay = new Outlay(cursor.getString(2), cursor.getString(1), Integer.parseInt(cursor.getString(3)));
                 outlay.setId(cursor.getInt(0));
-                outlay.setDate(cursor.getString(1));
             } while (cursor.moveToNext());
         }
         return outlay;
