@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ReportActivity" />
-        <activity android:name=".CategoryManager"/>
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>

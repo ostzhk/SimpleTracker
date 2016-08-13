@@ -2,17 +2,16 @@ package net.simple_tracker.simpletracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     Button button14;
     Button button15;
     DBHandler dbHandler;
+    TextView dateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +36,27 @@ public class MainActivity extends AppCompatActivity
         dbHandler = new DBHandler(this);
 
         //Get all views
-        editText = (EditText)findViewById(R.id.editText);
-        TextView dateText = (TextView) findViewById(R.id.dateText);
-        Button buttonPoint = (Button)findViewById(R.id.buttonPoint);
-        ImageButton buttonDelete = (ImageButton)findViewById(R.id.deleteButton);
-        Button historyButton = (Button)findViewById(R.id.historyBtn);
-        Button button0 = (Button)findViewById(R.id.button0);
-        Button button1 = (Button)findViewById(R.id.button1);
-        Button button2 = (Button)findViewById(R.id.button2);
-        Button button3 = (Button)findViewById(R.id.button3);
-        Button button4 = (Button)findViewById(R.id.button4);
-        Button button5 = (Button)findViewById(R.id.button5);
-        Button button6 = (Button)findViewById(R.id.button6);
-        Button button7 = (Button)findViewById(R.id.button7);
-        Button button8 = (Button)findViewById(R.id.button8);
-        Button button9 = (Button)findViewById(R.id.button9);
+        editText = (EditText) findViewById(R.id.editText);
+        dateText = (TextView) findViewById(R.id.dateText);
+        Button buttonPoint = (Button) findViewById(R.id.buttonPoint);
+        ImageButton buttonDelete = (ImageButton) findViewById(R.id.deleteButton);
+        Button historyButton = (Button) findViewById(R.id.historyBtn);
+        Button button0 = (Button) findViewById(R.id.button0);
+        Button button1 = (Button) findViewById(R.id.button1);
+        Button button2 = (Button) findViewById(R.id.button2);
+        Button button3 = (Button) findViewById(R.id.button3);
+        Button button4 = (Button) findViewById(R.id.button4);
+        Button button5 = (Button) findViewById(R.id.button5);
+        Button button6 = (Button) findViewById(R.id.button6);
+        Button button7 = (Button) findViewById(R.id.button7);
+        Button button8 = (Button) findViewById(R.id.button8);
+        Button button9 = (Button) findViewById(R.id.button9);
 
 
         //Test View
-        button12 = (Button)findViewById(R.id.button12);
-        button14 = (Button)findViewById(R.id.button14);
-        button15 = (Button)findViewById(R.id.button15);
+        button12 = (Button) findViewById(R.id.button12);
+        button14 = (Button) findViewById(R.id.button14);
+        button15 = (Button) findViewById(R.id.button15);
 
 
         buttonPoint.setOnClickListener(this);
@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity
         button7.setOnClickListener(this);
         button8.setOnClickListener(this);
         button9.setOnClickListener(this);
+
+        dateText.setOnClickListener(this);
 
         button12.setOnClickListener(this);
         button14.setOnClickListener(this);
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_categories: {
-                Intent intent = new Intent(this, ReportActivity.class);
+                Intent intent = new Intent(this, CategoryActivity.class);
                 startActivity(intent);
                 break;
             }
@@ -168,15 +170,21 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void addSum(int id) {
+        dbHandler.getWritableDatabase();
+        String categoryName = dbHandler.getCategoryName(id);
+        if (categoryName!=null){
+            dbHandler.addOutlay(new Outlay(categoryName, dateText.getText().toString(),
+                    Integer.parseInt(editText.getText().toString())));
+            editText.setText("");
+        }else {
+            Toast.makeText(this, "Категории не существует", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onClick(View view) {
-        Outlay outlay;
-        dbHandler.getWritableDatabase();
-
-
-
-
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.button0:
                 editText.append("0");
                 break;
@@ -213,20 +221,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.deleteButton:
                 editText.setText("");
                 break;
-            case R.id.button12:
-                outlay = new Outlay(button12.getText().toString(), "2016-8-13", Integer.parseInt(editText.getText().toString()));
-                dbHandler.addOutlay(outlay);
-                Toast.makeText(this, button12.getText(), Toast.LENGTH_SHORT).show();
+            case R.id.historyBtn:
+                Intent intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
                 break;
-            case R.id.button14:
-                outlay = new Outlay(button12.getText().toString(), "2016-8-13", Integer.parseInt(editText.getText().toString()));
-                dbHandler.addOutlay(outlay);
-                Toast.makeText(this, button14.getText(), Toast.LENGTH_SHORT).show();
+            case R.id.dateText:
+
                 break;
-            case R.id.button15:
-                outlay = new Outlay(button12.getText().toString(), "2016-8-13", Integer.parseInt(editText.getText().toString()));
-                dbHandler.addOutlay(outlay);
-                Toast.makeText(this, button15.getText(), Toast.LENGTH_SHORT).show();
+            default:
+                addSum(view.getId());
                 break;
         }
     }

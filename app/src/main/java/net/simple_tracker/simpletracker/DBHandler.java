@@ -150,4 +150,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 outlay.getCategoryName() + "', COUNT=" + outlay.getCount() + " WHERE " + ID + " = " + outlay.getId();
         db.execSQL(query);
     }
+
+    public String getCategoryName(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT CATEGORY_NAME FROM " + CATEGORY_TABLE + " WHERE " + ID + " = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            return cursor.getString(0);
+        }return null;
+    }
 }
