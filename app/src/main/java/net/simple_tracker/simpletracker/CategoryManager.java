@@ -1,7 +1,13 @@
 package net.simple_tracker.simpletracker;
 
-/**
- * Created by root on 13.08.16.
- */
-public class CategoryManager {
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class CategoryManager extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_category_manager);
+    }
 }

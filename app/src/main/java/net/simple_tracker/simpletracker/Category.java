@@ -2,12 +2,21 @@ package net.simple_tracker.simpletracker;
 
 
 public class Category {
-    int id;
-    String category;
-    boolean isDeleted;
+    int id, icon;
+    String categoryName;
 
-    public Category(String category) {
-        this.category = category;
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
+
+    public Category(String categoryName, int icon) {
+        this.categoryName = categoryName;
+        this.icon = icon;
+
     }
 
     public int getId() {
@@ -18,19 +27,11 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

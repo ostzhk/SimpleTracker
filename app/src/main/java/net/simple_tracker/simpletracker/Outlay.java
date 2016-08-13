@@ -4,11 +4,11 @@ package net.simple_tracker.simpletracker;
 public class Outlay {
     int id;
     int count;
-    String category;
+    String categoryName;
     String date;
 
-    public Outlay(String category, String date, int count) {
-        this.category = category;
+    public Outlay(String categoryName, String date, int count) {
+        this.categoryName = categoryName;
         this.count = count;
         this.date = date;
     }
@@ -30,12 +30,12 @@ public class Outlay {
         this.count = count;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getId() {
