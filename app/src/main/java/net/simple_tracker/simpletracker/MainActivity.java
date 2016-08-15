@@ -15,28 +15,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     EditText editText;
-    Button button12;
-    Button button14;
-    Button button15;
     DBHandler dbHandler;
     TextView dateText;
+    List<Category> categories;
+    LinearLayout categoriesLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         dbHandler = new DBHandler(this);
 
         //Get all views
+        categoriesLayout = (LinearLayout) findViewById(R.id.category_layout);
         editText = (EditText) findViewById(R.id.editText);
+        editText.setHint("0");
         dateText = (TextView) findViewById(R.id.dateText);
         Button buttonPoint = (Button) findViewById(R.id.buttonPoint);
         ImageButton buttonDelete = (ImageButton) findViewById(R.id.deleteButton);
@@ -53,16 +57,10 @@ public class MainActivity extends AppCompatActivity
         Button button9 = (Button) findViewById(R.id.button9);
 
 
-        //Test View
-        button12 = (Button) findViewById(R.id.button12);
-        button14 = (Button) findViewById(R.id.button14);
-        button15 = (Button) findViewById(R.id.button15);
-
-
+        //Setting listener
         buttonPoint.setOnClickListener(this);
         buttonDelete.setOnClickListener(this);
         historyButton.setOnClickListener(this);
-
         button0.setOnClickListener(this);
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
@@ -74,11 +72,7 @@ public class MainActivity extends AppCompatActivity
         button8.setOnClickListener(this);
         button9.setOnClickListener(this);
 
-        dateText.setOnClickListener(this);
-
-        button12.setOnClickListener(this);
-        button14.setOnClickListener(this);
-        button15.setOnClickListener(this);
+        showCategories();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -172,13 +166,13 @@ public class MainActivity extends AppCompatActivity
 
     private void addSum(int id) {
         dbHandler.getWritableDatabase();
-        String categoryName = dbHandler.getCategoryName(id);
-        if (categoryName!=null){
-            dbHandler.addOutlay(new Outlay(categoryName, dateText.getText().toString(),
+        if (!editText.getText().toString().equals("")){
+            dbHandler.addOutlay(new Outlay(dbHandler.getCategoryName(id), dateText.getText().toString(),
                     Integer.parseInt(editText.getText().toString())));
             editText.setText("");
+            Toast.makeText(this, "Запись добавлена", Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this, "Категории не существует", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Заполните сумму", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -231,6 +225,24 @@ public class MainActivity extends AppCompatActivity
             default:
                 addSum(view.getId());
                 break;
+        }
+    }
+
+    private List<Category> getCategories(){
+        dbHandler.getReadableDatabase();
+        return dbHandler.getAllCategories();
+    }
+
+    private void showCategories(){
+        dateText.setOnClickListener(this);
+        categories = getCategories();
+        for (Category o:categories) {
+            Button button = new Button(this);
+            button.setId(o.getId());
+            button.setText(o.getCategoryName());
+            button.setBackgroundResource(o.getIcon());
+            button.setOnClickListener(this);
+            categoriesLayout.addView(button);
         }
     }
 }
