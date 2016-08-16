@@ -20,28 +20,49 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,CalendarDatePickerDialogFragment.OnDateSetListener {
 
     EditText editText;
     DBHandler dbHandler;
     TextView dateText;
     List<Category> categories;
     LinearLayout categoriesLayout;
+    Calendar calendar;
+    private int day, month, year;
+    private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
+    CalendarDatePickerDialogFragment cdp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHandler = new DBHandler(this);
+        calendar = Calendar.getInstance();
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = (calendar.get(Calendar.MONTH)+1);
+        year = calendar.get(Calendar.YEAR);
+        cdp = new CalendarDatePickerDialogFragment()
+                .setOnDateSetListener(this);
 
         //Get all views
         categoriesLayout = (LinearLayout) findViewById(R.id.category_layout);
         editText = (EditText) findViewById(R.id.editText);
         editText.setHint("0");
+
+
         dateText = (TextView) findViewById(R.id.dateText);
+        dateText.setText(year + "-" + month + "-" + day);
+        dateText.setOnClickListener(this);
+
+
+
+
         Button buttonPoint = (Button) findViewById(R.id.buttonPoint);
         ImageButton buttonDelete = (ImageButton) findViewById(R.id.deleteButton);
         Button historyButton = (Button) findViewById(R.id.historyBtn);
@@ -128,27 +149,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_day: {
+            case R.id.nav_report: {
                 Intent intent = new Intent(this, ReportActivity.class);
-                intent.putExtra("date", R.id.nav_day);
-                startActivity(intent);
-                break;
-            }
-            case R.id.nav_week: {
-                Intent intent = new Intent(this, ReportActivity.class);
-                intent.putExtra("date", R.id.nav_week);
-                startActivity(intent);
-                break;
-            }
-            case R.id.nav_month: {
-                Intent intent = new Intent(this, ReportActivity.class);
-                intent.putExtra("date", R.id.nav_month);
-                startActivity(intent);
-                break;
-            }
-            case R.id.nav_year: {
-                Intent intent = new Intent(this, ReportActivity.class);
-                intent.putExtra("date", R.id.nav_year);
                 startActivity(intent);
                 break;
             }
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
             case R.id.dateText:
-
+                cdp.show(getSupportFragmentManager(), FRAG_TAG_DATE_PICKER);
                 break;
             default:
                 addSum(view.getId());
@@ -234,7 +236,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showCategories(){
-        dateText.setOnClickListener(this);
         categories = getCategories();
         for (Category o:categories) {
             Button button = new Button(this);
@@ -244,5 +245,10 @@ public class MainActivity extends AppCompatActivity
             button.setOnClickListener(this);
             categoriesLayout.addView(button);
         }
+    }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+        dateText.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
     }
 }

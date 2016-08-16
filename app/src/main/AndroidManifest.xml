@@ -18,7 +18,7 @@
         <activity android:name=".ReportActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".HistoryActivity" />
-        <activity android:name=".AddIcon"></activity>
+        <activity android:name=".AddIcon" />
     </application>
 
 </manifest>

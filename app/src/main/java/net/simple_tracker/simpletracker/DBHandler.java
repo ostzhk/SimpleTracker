@@ -40,8 +40,24 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String CREATE_CATEGORY = "CREATE TABLE " + CATEGORY_TABLE + "("
                 + ID + " INTEGER PRIMARY KEY," + CATEGORY_NAME + " TEXT NOT NULL," + ICON + " INTEGER NOT NULL)";
+
+        String addTransport = "INSERT INTO " + CATEGORY_TABLE + " (" + CATEGORY_NAME + ", " + ICON + ") " +
+                "VALUES ('Транспорт', " + R.drawable.ic_category_transport + ")";
+        String addCar = "INSERT INTO " + CATEGORY_TABLE + " (" + CATEGORY_NAME + ", " + ICON + ") " +
+                "VALUES ('Машина', " + R.drawable.ic_category_car + ")";
+        String addEat = "INSERT INTO " + CATEGORY_TABLE + " (" + CATEGORY_NAME + ", " + ICON + ") " +
+                "VALUES ('Еда', " + R.drawable.ic_category_eat + ")";
+        String addHealth = "INSERT INTO " + CATEGORY_TABLE + " (" + CATEGORY_NAME + ", " + ICON + ") " +
+                "VALUES ('Здоровье', " + R.drawable.ic_category_health + ")";
+        String addShop = "INSERT INTO " + CATEGORY_TABLE + " (" + CATEGORY_NAME + ", " + ICON + ") " +
+                "VALUES ('Магазин', " + R.drawable.ic_category_shop + ")";
         db.execSQL(CREATE_OUTLAY_INFO);
         db.execSQL(CREATE_CATEGORY);
+        db.execSQL(addTransport);
+        db.execSQL(addCar);
+        db.execSQL(addEat);
+        db.execSQL(addHealth);
+        db.execSQL(addShop);
     }
 
     @Override

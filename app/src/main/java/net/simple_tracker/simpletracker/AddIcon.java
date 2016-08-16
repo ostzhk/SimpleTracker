@@ -1,5 +1,6 @@
 package net.simple_tracker.simpletracker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,7 @@ public class AddIcon extends AppCompatActivity implements View.OnClickListener{
 
     DBHandler dbHandler;
     List<Integer> icons;
-    TableLayout iconsLayout;
+    LinearLayout iconsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class AddIcon extends AppCompatActivity implements View.OnClickListener{
         setTheme(R.style.AddIconTheme);
         dbHandler = new DBHandler(this);
         initializeIcons();
-        iconsLayout = (TableLayout)findViewById(R.id.iconsLayout);
+        iconsLayout = (LinearLayout) findViewById(R.id.iconsLayout);
         showIcons();
     }
 
@@ -34,7 +35,6 @@ public class AddIcon extends AppCompatActivity implements View.OnClickListener{
             ImageButton imageButton = new ImageButton(this);
             imageButton.setOnClickListener(this);
             imageButton.setId(i);
-            imageButton.setScaleType(ImageView.ScaleType.CENTER);
             imageButton.setBackgroundResource(i);
             iconsLayout.addView(imageButton);
         }
@@ -47,11 +47,16 @@ public class AddIcon extends AppCompatActivity implements View.OnClickListener{
             dbHandler.addCategory(new Category(categoryName, view.getId()));
         Toast.makeText(AddIcon.this, "Категория " + categoryName + " добавлена", Toast.LENGTH_SHORT).show();
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void initializeIcons(){
         icons = new ArrayList<>();
-        icons.add(R.drawable.ic_add_icon);
+        icons.add(R.drawable.ic_category_car);
         icons.add(R.drawable.ic_category_eat);
+        icons.add(R.drawable.ic_category_health);
+        icons.add(R.drawable.ic_category_shop);
+        icons.add(R.drawable.ic_category_transport);
     }
 }

@@ -3,10 +3,12 @@ package net.simple_tracker.simpletracker;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -19,17 +21,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
-public class ReportActivity extends Activity implements View.OnClickListener {
+public class ReportActivity extends AppCompatActivity implements View.OnClickListener, CalendarDatePickerDialogFragment.OnDateSetListener {
     Map<String, Outlay> outlayList;
     PieChart pieChart;
     DBHandler dbHandler;
     String date;
     String date2;
     int finalSum;
-    Button button;
     Calendar calendar;
-    private int year, month, day;
-    TextView textView;
+    private int day, month, year;
+    private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
+    CalendarDatePickerDialogFragment cdp;
+    TextView textView, textView2;
+    boolean isFirstDate = true;
 
 
     @Override
@@ -37,12 +41,21 @@ public class ReportActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
-        textView = (TextView)findViewById(R.id.textView);
+
 
         calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = (calendar.get(Calendar.MONTH)+1);
+        year = calendar.get(Calendar.YEAR);
+        cdp = new CalendarDatePickerDialogFragment()
+                .setOnDateSetListener(this);
+
+        textView = (TextView)findViewById(R.id.textView);
+        textView2 = (TextView)findViewById(R.id.textView2);
+        textView.setText(year + "-" + month + "-" + day);
+        textView.setOnClickListener(this);
+        textView2.setText(year + "-" + (month+1) + "-" + day);
+        textView2.setOnClickListener(this);
 
         pieChart = (PieChart) findViewById(R.id.chart);
         pieChart.setUsePercentValues(true);
@@ -141,28 +154,9 @@ public class ReportActivity extends Activity implements View.OnClickListener {
 
     public void showReport() {
         finalSum = 0;
-
-        switch (getIntent().getExtras().getInt("date")){
-            case R.id.nav_day:
-                date = String.valueOf(year) + "-" + (month + 1) + "-" + day;
-                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
-                break;
-            case R.id.nav_week:
-                date = String.valueOf(year) + "-" + (month + 1) + "-" + (day-7);
-                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
-                break;
-            case R.id.nav_month:
-                date = String.valueOf(year) + "-" + (month + 1) + "-" + 1;
-                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
-                break;
-            case R.id.nav_year:
-                date = String.valueOf(year - 1) + "-" + (month + 1) + "-" + 1;
-                date2 = String.valueOf(year) + "-" + (month + 1) + "-" + 1;
-                break;
-        }
-
-        textView.setText(date + " - " + date2);
-        outlayList = dbHandler.getSumOfCategory(date, date2);
+//        date = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+//        date2 = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+        outlayList = dbHandler.getSumOfCategory(textView.getText().toString(), textView2.getText().toString());
         setData();
         pieChart.animateXY(2000, 2000);
         pieChart.invalidate();
@@ -170,6 +164,22 @@ public class ReportActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        showReport();
+        if (v.getId()==R.id.textView){
+            isFirstDate = true;
+        }else if (v.getId()==R.id.textView2){
+            isFirstDate = false;
+        }
+        cdp.show(getSupportFragmentManager(), FRAG_TAG_DATE_PICKER);
+    }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+        if (isFirstDate){
+            textView.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
+            showReport();
+        }else {
+            textView2.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
+            showReport();
+        }
     }
 }

@@ -3,17 +3,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_day"
-            android:title="День" />
-        <item
-            android:id="@+id/nav_week"
-            android:title="Неделя" />
-        <item
-            android:id="@+id/nav_month"
-            android:title="Месяц" />
-        <item
-            android:id="@+id/nav_year"
-            android:title="Год" />
+            android:id="@+id/nav_report"
+            android:title="Отчет" />
     </group>
 
     <group android:checkableBehavior="single">
