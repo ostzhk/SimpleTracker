@@ -84,20 +84,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Outlay> getAllOutlays() {
-        List<Outlay> outlayList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + OUTLAY_INFO;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Outlay outlay = new Outlay(cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(1)));
-                outlay.setId(Integer.parseInt(cursor.getString(0)));
-                outlayList.add(outlay);
-            } while (cursor.moveToNext());
-        }
-        return outlayList;
-    }
+
 
     public List<Category> getAllCategories() {
         List<Category> categoryList = new ArrayList<>();
@@ -174,5 +161,48 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             return cursor.getString(0);
         }return null;
+    }
+
+    public ArrayList<String> getDates() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT distinct DATE FROM " + OUTLAY_INFO;
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<String> dates = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                dates.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return dates;
+    }
+
+    public List<Outlay> getAllOutlaysByDate(String date) {
+        List<Outlay> outlayList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + OUTLAY_INFO + " WHERE DATE = '" + date + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Outlay outlay = new Outlay(cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(1)));
+                outlay.setId(Integer.parseInt(cursor.getString(0)));
+                outlayList.add(outlay);
+            } while (cursor.moveToNext());
+        }
+        return outlayList;
+    }
+
+    public List<Outlay> getAllOutlaysByCategory(String category) {
+        List<Outlay> outlayList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + OUTLAY_INFO + " WHERE CATEGORY_NAME = '" + category + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Outlay outlay = new Outlay(cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(1)));
+                outlay.setId(Integer.parseInt(cursor.getString(0)));
+                outlayList.add(outlay);
+            } while (cursor.moveToNext());
+        }
+        return outlayList;
     }
 }

@@ -19,6 +19,9 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".AddIcon" />
+        <activity android:name=".OneActivity" />
+        <activity android:name=".TwoActivity"/>
+        <activity android:name=".CollectionDemoActivity"/>
     </application>
 
 </manifest>

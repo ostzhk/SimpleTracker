@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
                 editText.setText("");
                 break;
             case R.id.historyBtn:
-                Intent intent = new Intent(this, HistoryActivity.class);
+                Intent intent = new Intent(this, CollectionDemoActivity.class);
                 startActivity(intent);
                 break;
             case R.id.dateText:
