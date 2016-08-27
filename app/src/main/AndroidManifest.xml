@@ -16,12 +16,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ReportActivity" />
-        <activity android:name=".CategoryActivity" />
+        <activity android:name=".CategoriesActivity" />
         <activity android:name=".HistoryActivity" />
-        <activity android:name=".AddIcon" />
         <activity android:name=".OneActivity" />
-        <activity android:name=".TwoActivity"/>
-        <activity android:name=".CollectionDemoActivity"/>
+        <activity android:name=".TwoActivity" />
+        <activity android:name=".CategoryInfo"></activity>
     </application>
 
 </manifest>

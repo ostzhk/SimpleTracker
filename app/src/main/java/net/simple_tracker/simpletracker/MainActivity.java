@@ -8,14 +8,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -155,7 +153,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_categories: {
-                Intent intent = new Intent(this, CategoryActivity.class);
+                Intent intent = new Intent(this, CategoriesActivity.class);
                 startActivity(intent);
                 break;
             }
@@ -218,7 +216,7 @@ public class MainActivity extends AppCompatActivity
                 editText.setText("");
                 break;
             case R.id.historyBtn:
-                Intent intent = new Intent(this, CollectionDemoActivity.class);
+                Intent intent = new Intent(this, HistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.dateText:

@@ -154,6 +154,13 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void changeCategory(int id, String categoryName, int iconId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + CATEGORY_TABLE + " SET CATEGORY_NAME='" + categoryName + "', ICON=" +
+                iconId +  " WHERE " + ID + " = " + id;
+        db.execSQL(query);
+    }
+
     public String getCategoryName(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT CATEGORY_NAME FROM " + CATEGORY_TABLE + " WHERE " + ID + " = " + id;
