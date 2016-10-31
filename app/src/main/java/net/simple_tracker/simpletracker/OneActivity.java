@@ -37,7 +37,7 @@ public class OneActivity extends AppCompatActivity {
 
             for (Outlay o:outlays){
                 TextView textView = new TextView(this);
-                textView.setText(String.valueOf(o.getCount()));
+                textView.setText(String.valueOf(o.getCategoryName() + ": " + o.getCount()));
                 oneLayout.addView(textView);
             }
         }

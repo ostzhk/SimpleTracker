@@ -39,7 +39,7 @@ public class TwoActivity extends AppCompatActivity {
 
             for (Outlay o:outlays){
                 TextView textView = new TextView(this);
-                textView.setText(String.valueOf(o.getCount()));
+                textView.setText(String.valueOf(o.getDate() + ": " + o.getCount()));
                 twoLayout.addView(textView);
             }
         }

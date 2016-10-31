@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,17 +26,17 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,CalendarDatePickerDialogFragment.OnDateSetListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, CalendarDatePickerDialogFragment.OnDateSetListener {
 
+    private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
     EditText editText;
     DBHandler dbHandler;
     TextView dateText;
     List<Category> categories;
     LinearLayout categoriesLayout;
     Calendar calendar;
-    private int day, month, year;
-    private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
     CalendarDatePickerDialogFragment cdp;
+    private int day, month, year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         dbHandler = new DBHandler(this);
         calendar = Calendar.getInstance();
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        month = (calendar.get(Calendar.MONTH)+1);
+        month = (calendar.get(Calendar.MONTH) + 1);
         year = calendar.get(Calendar.YEAR);
         cdp = new CalendarDatePickerDialogFragment()
                 .setOnDateSetListener(this);
@@ -57,8 +59,6 @@ public class MainActivity extends AppCompatActivity
         dateText = (TextView) findViewById(R.id.dateText);
         dateText.setText(year + "-" + month + "-" + day);
         dateText.setOnClickListener(this);
-
-
 
 
         Button buttonPoint = (Button) findViewById(R.id.buttonPoint);
@@ -166,12 +166,12 @@ public class MainActivity extends AppCompatActivity
 
     private void addSum(int id) {
         dbHandler.getWritableDatabase();
-        if (!editText.getText().toString().equals("")){
+        if (!editText.getText().toString().equals("")) {
             dbHandler.addOutlay(new Outlay(dbHandler.getCategoryName(id), dateText.getText().toString(),
                     Integer.parseInt(editText.getText().toString())));
             editText.setText("");
             Toast.makeText(this, "Запись добавлена", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             Toast.makeText(this, "Заполните сумму", Toast.LENGTH_SHORT).show();
         }
     }
@@ -228,25 +228,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private List<Category> getCategories(){
+    private List<Category> getCategories() {
         dbHandler.getReadableDatabase();
         return dbHandler.getAllCategories();
     }
 
-    private void showCategories(){
+    private void showCategories() {
         categories = getCategories();
-        for (Category o:categories) {
-            Button button = new Button(this);
-            button.setId(o.getId());
-            button.setText(o.getCategoryName());
-            button.setBackgroundResource(o.getIcon());
-            button.setOnClickListener(this);
-            categoriesLayout.addView(button);
+        for (Category o : categories) {
+            ImageButton imageButton = new ImageButton(this);
+            imageButton.setId(o.getId());
+            imageButton.setBackgroundResource(o.getIcon());
+            imageButton.setOnClickListener(this);
+
+            //преобразование pixel в dp и установка во view
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+            ActionBar.LayoutParams params = new ActionBar.LayoutParams(width, height);
+            imageButton.setLayoutParams(params);
+            categoriesLayout.addView(imageButton);
         }
     }
 
     @Override
     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-        dateText.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
+        dateText.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
     }
 }
